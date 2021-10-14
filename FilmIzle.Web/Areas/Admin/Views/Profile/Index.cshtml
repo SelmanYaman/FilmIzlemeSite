@@ -1,0 +1,36 @@
+﻿@model AppUserUpdateDto
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<form asp-action="Index" method="post" class="w-75 mx-auto p-3">
+    <input type="hidden" asp-for="@Model.Id" />
+    <div class="form-group">
+        <label asp-for="@Model.UserName">Kullanıcı Adı</label>
+        <span asp-validation-for="@Model.UserName" class="text-danger"></span>
+        <input asp-for="@Model.UserName" class="form-control" required/>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.Password">Şifre</label>
+        <span asp-validation-for="@Model.Password" class="text-danger"></span>
+        <input asp-for="@Model.Password" class="form-control" required/>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.Email">Email</label>
+        <span asp-validation-for="@Model.Email" class="text-danger"></span>
+        <input asp-for="@Model.Email" class="form-control" required/>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.Name">Ad</label>
+        <span asp-validation-for="@Model.Name" class="text-danger"></span>
+        <input asp-for="@Model.Name" class="form-control" required/>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.SurName">Soyad</label>
+        <span asp-validation-for="@Model.SurName" class="text-danger"></span>
+        <input asp-for="@Model.SurName" class="form-control" required/>
+    </div>
+    <a asp-controller="home" asp-action="Index" class="btn btn-warning btn-sm"><i class="far fa-times-circle mr-1"></i>Vazgeç</a>
+    <button type="submit" class="btn btn-primary btn-sm"><i class="far fa-save mr-2"></i>Kaydet</button>
+</form>

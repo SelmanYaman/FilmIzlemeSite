@@ -1,0 +1,28 @@
+﻿@model List<FilmListAllDto>
+@{
+    ViewData["Title"] = "FilmByCategory";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    string category = (string)ViewBag.Category;
+}
+
+<h5 class="display-5 text-center my-3">Son eklenen 20 @category filmleri</h5>
+
+<table class="table w-100 table-hover table-bordered table-sm mt-2">
+    <tr>
+        <th>Film İsmi</th>
+        <th>Yönetmen</th>
+        <th>Yayın Tarihi</th>
+        <th>IMDB Puan</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Name</td>
+            <td>@item.Director</td>
+            <td>@item.ReleaseDate.ToShortDateString()</td>
+            <td>@item.IMDBPoint</td>
+        </tr>
+    }
+</table>
+
+<a class="btn btn-primary mb-3" asp-action="NumberOfFilmsByCategory">Ana Sayfa</a>

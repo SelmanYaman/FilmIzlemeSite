@@ -1,0 +1,66 @@
+﻿@model FilmUpdateDto 
+@{
+    ViewData["Title"] = "UpdateFilm";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<form asp-action="UpdateFilm" method="post" class="w-75 mx-auto p-3" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="PostedTime" />
+    <div class="form-group">
+        <label>Film İsmi</label>
+        <span asp-validation-for="Name" class="text-danger"></span>
+        <input type="text" asp-for="Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" asp-for="TRDubbing">
+            <label class="form-check-label" for="flexCheckDefault">
+                Türkçe Dublaj
+            </label>
+        </div>
+        <div class="form-group">
+            <label>TR Dublaj Url</label>
+            <span asp-validation-for="TRDubbingUrl" class="text-danger"></span>
+            <input type="text" asp-for="TRDubbingUrl" class="form-control" />
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" asp-for="TRSubtitle">
+            <label class="form-check-label" for="flexCheckChecked">
+                Türkçe Altyazılı
+            </label>
+        </div>
+        <div class="form-group">
+            <label>TR Altyazı Url</label>
+            <span asp-validation-for="TRSubtitleUrl" class="text-danger"></span>
+            <input type="text" asp-for="TRSubtitleUrl" class="form-control" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Açıklama</label>
+        <span asp-validation-for="Description" class="text-danger"></span>
+        <textarea style="height:250px;" asp-for="Description" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+        <label>Yönetmen</label>
+        <span asp-validation-for="Director" class="text-danger"></span>
+        <input type="text" asp-for="Director" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Resim</label>
+        <span asp-validation-for="ImagePath" class="text-danger"></span>
+        <input type="file" name="image" accept="image/*">
+    </div>
+    <div class="form-group">
+        <label>Gösterime Girdiği Tarih</label>
+        <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+        <input type="date" asp-for="ReleaseDate" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>IMDB Puanı</label>
+        <span asp-validation-for="IMDBPoint" class="text-danger"></span>
+        <input type="text" asp-for="IMDBPoint" class="form-control" />
+    </div>
+    <a asp-action="Index" class="btn btn-warning btn-sm"><i class="far fa-times-circle mr-1"></i>Vazgeç</a>
+    <button type="submit" class="btn btn-info btn-sm"><i class="far fa-save mr-2"></i>Kaydet</button>
+</form>

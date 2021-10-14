@@ -1,0 +1,67 @@
+﻿@model List<FilmListDto>
+@{
+    ViewData["Title"] = "MostClicked";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int page = (int)ViewBag.filmPage;
+    int filmPageCount = (int)ViewBag.filmPageCount;
+}
+
+<link href="~/css/filmCard.css" rel="stylesheet" />
+
+@if (page <= filmPageCount)
+{
+    if (page < 1)
+    {
+        page = 1;
+        ViewBag.filmPage = page;
+    }
+
+
+    @foreach (var item in Model)
+    {
+        <div class="movie-card p-0">
+            <div class="movie-header" style="background: url('@Url.Content($"~/img/{@item.ImagePath}")'); background-size: 215px 267px">
+                <div class="header-icon-container">
+                    <a asp-controller="Film" asp-action="Watch" asp-route-name="@item.Name">
+                        <i class="material-icons header-icon"></i>
+                    </a>
+                </div>
+            </div><!--movie-header-->
+            <div class="movie-content">
+                <div class="movie-content-header">
+                    <a asp-controller="Film" asp-action="Watch" asp-route-name="@item.Name">
+                        <strong class="movie-title">@item.Name</strong>
+                    </a>
+                </div>
+                <div class="movie-info">
+                    <div class="info-section">
+                        <label>Dil</label>
+                        @if (item.TRDubbing == true && item.TRSubtitle == true)
+                        {
+                            <span>TR Dublaj - Altyazılı</span>
+                        }
+                        else if (item.TRDubbing == true)
+                        {
+                            <span>TR Dublaj</span>
+                        }
+                        else if (item.TRSubtitle == true)
+                        {
+                            <span>TR Altyazılı</span>
+                        }
+                    </div><!--date,time-->
+                    <div class="info-section">
+                        <label>IMDB</label>
+                        <span>@item.IMDBPoint</span>
+                    </div><!--screen-->
+                </div>
+            </div><!--movie-content-->
+        </div><!--movie-card-->
+    }
+
+
+    @await Html.PartialAsync("_Pagination");
+}
+else
+{
+    <h1 class="text-white text-center mt-5">Herhangi Bir Film Bulunamadı</h1>
+}

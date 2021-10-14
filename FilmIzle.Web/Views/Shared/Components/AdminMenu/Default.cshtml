@@ -1,0 +1,16 @@
+﻿@{ 
+    string active = (string)TempData["Active"];
+}
+
+<div class="bg-light border-right" id="sidebar-wrapper">
+    <div class="sidebar-heading">
+        <img src="~/img/admin.jpg" style="height:10rem!important;width:13rem!important;" />
+    </div>
+    <div class="list-group list-group-flush">
+        <a asp-controller="Home" asp-action="Index" class="list-group-item list-group-item-action @(active == "Home"?"active":"")">AnaSayfa</a>
+        <a asp-controller="Film" asp-action="Index" class="list-group-item list-group-item-action @(active == "Film"?"active":"")">Film İşlemleri</a>
+        <a asp-controller="Category" asp-action="Index" class="list-group-item list-group-item-action @(active == "Category"?"active":"")">Kategori İşlemleri</a>
+        <a asp-controller="Profile" asp-action="Index" class="list-group-item list-group-item-action @(active == "Profile"?"active":"")">Profilim</a>
+        <a asp-area="" asp-controller="Login" asp-action="SignOut" class="list-group-item list-group-item-action">Çıkış Yap</a>
+    </div>
+</div>

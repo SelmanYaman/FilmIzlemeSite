@@ -1,0 +1,67 @@
+﻿
+@{
+    ViewData["Title"] = "Slider";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    List<string> filmName = ViewBag.FilmName;
+    List<string> IMDBPoint = ViewBag.IMDBPoint;
+    List<string> language = ViewBag.Language;
+}
+
+<p class="mt-3">
+    Slider'da görüntülenecek filmler <strong>ayrı tutulmaktadır.</strong> <br />
+    Siteye eklediğiniz filmin ismi ile slider'a eklediğiniz filmin <strong> ismi aynı olmalıdır.</strong><br />
+    Slider'a ekleyeceğiniz filmin resminin yükseklik ve genişliğine dikkat edilmelidir.<br />
+    Resmin daha güzel gözükmesi için genişliği yüksekliğinden daha <strong>büyük</strong> olmalıdır.
+</p>
+
+
+<div class="col-md-3">
+    <a asp-action="AddSliderFilm" class="btn btn-outline-dark btn-sm my-2"><i class="far fa-plus-square mr-2"></i>Film Ekle</a>
+</div>
+
+<table class="table table-hover table-bordered table-sm mt-2">
+    <tr>
+        <th>Film İsmi</th>
+        <th>IMDB Puan</th>
+        <th>Dil</th>
+        <th>İşlem</th>
+    </tr>
+    @if (filmName != null)
+    {
+        @for (int i = 0; i < filmName.Count; i++)
+        {
+            <tr>
+                <td>@filmName[i]</td>
+                <td>@IMDBPoint[i]</td>
+                <td>@language[i]</td>
+                <td>
+                    <form method="get" asp-action="DeleteSliderFilm" class="form-inline">
+                        @*<a asp-action="UpdateFilm" asp-route-id="" class="btn btn-warning btn-sm"><i class="far fa-edit mr-2"></i>Düzenle</a>*@
+                        <input type="hidden" class="form-control" name="name" value="@filmName[i]">
+                        <button class="btn btn btn-danger btn-sm mx-2"><i class="far fa-times-circle mr-2"></i>Sil</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    }
+</table>
+
+@*<div class="modal fade" id="deleteSliderFilm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Uyarı</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Silmek istediğinizden emin misiniz?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                    <a id="btnDelete" name="@filmName[0]" asp-action="DeleteSliderFilm" class="btn btn-primary">Evet Sil</a>
+                </div>
+            </div>
+        </div>
+    </div>*@

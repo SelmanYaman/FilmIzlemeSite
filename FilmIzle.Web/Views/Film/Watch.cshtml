@@ -1,0 +1,271 @@
+﻿@model FilmWatchDto
+@{
+    Layout = null;
+    string categories = (string)TempData["Categories"];
+    string language = (string)TempData["Language"];
+}
+
+
+
+@{
+    var comments = (List<CommentListDto>)ViewBag.Comments;
+
+    void GetComments(List<CommentListDto> comments)
+    {
+
+        if (comments.Count > 0)
+        {
+            foreach (var comment in comments)
+            {
+                <div class="media my-3 p-2 border border-white">
+                    <img class="d-flex mr-3 rounded-circle" src="/img/commentProfile2.jpg" style="height:50px;width:50px;" alt="">
+                    <div class="media-body">
+                        <h5 class="mt-0">İsim : @comment.AuthorName</h5>
+                        Yorum : @comment.Description
+                        <button type="button" class="btn btn-sm btn-light float-right"
+                                onclick="showCommentForm(@comment.Id,@Model.Id)">
+                            Cevapla
+                        </button>
+                        <div id="commentBox@(comment.Id)" style="color:black">
+
+                        </div>
+                        @{
+                            GetComments(comment.SubComments);
+                        }
+                    </div>
+                </div>
+            }
+        }
+    }
+}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.82.0">
+    <title>Carousel Template · Bootstrap v5.0</title>
+
+    <style>
+        .nav-item:hover, .navbar-brand:hover {
+            background-color: gray;
+        }
+
+        .nav-item {
+            font-size: 13px;
+        }
+        .black{
+            background-color:black;
+        }
+    </style>
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/comment.min.css" rel="stylesheet" />
+
+    <!-- Custom styles for this template -->
+
+    <link href="~/lib/bootstrap/carousel/carousel.css" rel="stylesheet" />
+    <link href="~/lib/fontAwesome/css/all.min.css" rel="stylesheet" />
+</head>
+
+<body class="m-0 p-0 black">
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-dark black border-bottom border-white">
+            <div class="container">
+                <a class="navbar-brand p-2" style="font-size:1.5rem;" asp-action="Index" asp-controller="Film">AnaSayfa</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                        aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                        <li class="nav-item dropdown">
+                            <a onclick="myFunction()" class="nav-link dropdown-toggle text-white" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Film Türleri</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" asp-controller="Film" asp-action="MostClicked">En Çok Tıklananlar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" asp-controller="Film" asp-action="MostCommented">En Çok Yorum Yapılanlar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" asp-controller="Film" asp-action="ImdbSevenPoint">Imdb 7+</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" asp-controller="Film" asp-action="Year2021">2021 Filmleri</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" asp-controller="Film" asp-action="TRDubbing">Türkçe Dublaj</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" asp-controller="Film" asp-action="TRSubtitle">Türkçe Altyazı</a>
+                        </li>
+                    </ul>
+                    <form class="d-flex" asp-controller="Film" asp-action="Search">
+                        <input class="form-control me-2" type="search" name="q" placeholder="Film Ara" aria-label="Search">
+                        <button class="btn btn-outline-light" type="submit">Ara</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container mt-3" id="myDIV" style="display:none;">
+            @await Component.InvokeAsync("CategoryList")
+        </div>
+
+        <div class="container mt-3 text-white border border-white">
+            <div class="row">
+                <h5 class="mt-3 mx-3"><strong>Film : @Model.Name</strong></h5>
+                @if (Model.TRDubbing == true && Model.TRSubtitle == true)
+                {
+                    <a asp-action="Watch" asp-route-language="TRD" class="btn btn-sm btn-light m-3 mx-4" id="TRDubbing" style="width:100px;">TR Dublaj</a>
+                    <a asp-action="Watch" asp-route-language="TRA" class="btn btn-sm btn-light m-3" id="TRSubtitle" style="width:100px;">TR Altyazılı</a>
+                }
+                else if (Model.TRDubbing == true)
+                {
+                    <a asp-action="Watch" asp-route-language="TRD" class="btn btn-sm btn-light m-3 mx-4" style="width:100px;">TR Dublaj</a>
+                }
+                else if (Model.TRSubtitle == true)
+                {
+                    <a asp-action="Watch" asp-route-language="TRA" class="btn btn-sm btn-light m-3 mx-4" style="width:100px;">TR Altyazılı</a>
+                }
+                <h3 style="float:right;"></h3>
+
+                @if (Model.TRDubbing == true && Model.TRSubtitle == true && language == "TRD" || Model.TRDubbing == true && language == "TRD")
+                {
+                    <iframe class="border border-white" src="@Model.TRDubbingUrl" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen="" height="500"></iframe>
+                }
+                else
+                {
+                    <iframe class="border border-white" src="@Model.TRSubtitleUrl" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen="" height="500"></iframe>
+                }
+                <div class="col-md-2 mt-3">
+                    <img src="~/img/@Model.ImagePath" height="270" width="170" />
+                </div>
+                <div class="col-md-10 mt-4">
+                    <p><strong>IMDB</strong> : @Model.IMDBPoint</p>
+                    <p><strong>Tür</strong> : @categories</p>
+                    <p><strong>Yapım</strong> : @Model.ReleaseDate.ToShortDateString()</p>
+                    <p><strong>Yönetmen</strong> : @Model.Director</p>
+                    <p><strong>Film Özeti</strong> : @Model.Description</p>
+                </div>
+            </div>
+
+            @*yorum formu*@
+            <div class="row">
+                <div class="col-md-2">
+
+                </div>
+                <div class="col-md-10">
+                    <h3>Film hakkında ne düşünüyorsunuz?</h3>
+                    <form method="post" role="form" asp-action="AddToComment">
+                        <input type="hidden" name="FilmId" value="@Model.Id" />
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <input type="text" class="form-control my-3" name="AuthorName" placeholder="Ad Soyad" />
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="AuthorEmail" placeholder="Email" />
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <textarea class="form-control my-3" name="Description" placeholder="Film hakkında yorumunuz?" rows="5"> </textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <button class="btn btn-light" style="float:right;width:100px;">Gönder</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="row">
+                @if (comments.Count > 0)
+                {
+                    <div class="col-md-12 mt-3 border border-white">
+                        <!-- Blog Post -->
+                        <h5 class="mt-3"> Yapılan Yorumlar</h5>
+                        <div class="my-4">
+                            @{
+                                GetComments(comments);
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+
+
+            @*<hr class="featurette-divider">*@
+            <!-- /END THE FEATURETTES -->
+
+        </div><!-- /.container -->
+        <!-- FOOTER -->
+        @*<footer class="container">
+            <p class="float-end"><a href="#">Back to top</a></p>
+            <p>&copy; 2017–2021 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+        </footer>*@
+    </main>
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="~/lib/fontAwesome/js/all.min.js"></script>
+    <script>
+        function myFunction() {
+            var x = document.getElementById("myDIV");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+    </script>
+
+    <script>
+        let commentName = "";
+        let commentIndex = 0;
+        function showCommentForm(id, filmId) {
+            if (commentIndex == 0) {
+                let html = `<div class="card my-4" >
+                                  <h5 class="card-header">Yorum Yaz</h5>
+                                  <div class="card-body">
+                                    <form method="POST" action="/Film/AddToComment">
+                                        <input type="hidden" name="FilmId" value="${filmId}">
+                                        <input type="hidden" name="ParentCommentId" value="${id}">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" name="AuthorName" placeholder="Ad Soyad" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="email" class="form-control" name="AuthorEmail" placeholder="Email" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <textarea class="form-control" rows="3" name="Description" placeholder="Cevabınız..." required></textarea>
+                                        </div>
+                                        <button type="button" class="btn btn-warning" onclick="hideCommentForm(${id})">Vazgeç</button>
+                                        <button type="submit" class="btn btn-primary">Gönder</button>
+                                    </form>
+                                    </div>
+                                  </div>`;
+                document.getElementById("commentBox" + id).innerHTML += html;
+            }
+            commentIndex = 1;
+            //$("#commentBox" + id).html(html);
+        }
+
+        function hideCommentForm(id) {
+            document.getElementById("commentBox" + id).innerHTML = "";
+            commentIndex = 0;
+        }
+    </script>
+</body>
+</html>

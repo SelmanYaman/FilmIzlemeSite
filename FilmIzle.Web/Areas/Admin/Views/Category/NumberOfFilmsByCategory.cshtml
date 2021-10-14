@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewData["Title"] = "NumberOfFilmsByCategory";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div>
+    <h5 class="text-center my-3 font-weight-bold">Kategorilere Göre Film Sayıları</h5>
+</div>
+
+
+<table class="table table-sm table-bordered table-hover mt-2">
+    <tr>
+        <th>Kategori</th>
+        <th>Film Sayısı</th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Name</td>
+            <td>@item.Count</td>
+            <td>
+                <form method="get" asp-action="FilmByCategory">
+                    <input type="hidden" name="q" value="@item.Name" />
+                    <button type="submit" class="btn btn-primary">@item.Name</button>
+                </form>
+            </td>
+        </tr>
+    }
+</table>

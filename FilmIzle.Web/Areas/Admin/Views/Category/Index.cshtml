@@ -1,0 +1,82 @@
+﻿@model List<CategoryListDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+@if (Model.Count != 0)
+{
+    <a asp-action="AddCategory" class="btn btn-outline-dark btn-sm my-2"><i class="far fa-plus-square mr-2"></i>Kategori Ekle</a>
+    <table class="table table-sm table-bordered table-hover mt-2">
+        <tr>
+            <th>Kategori</th>
+            <th>İşlem</th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>
+                    <a asp-action="UpdateCategory" asp-route-id="@item.Id" class="btn btn-warning btn-sm"><i class="far fa-edit mr-2"></i>Düzenle</a>
+                    <a href="" data-toggle="modal" data-target="#deleteScreen" data-selman="@item.Id" class="btn btn-danger btn-sm"><i class="far fa-times-circle mr-2"></i>Sil</a>
+                </td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <a asp-action="AddCategory" class="btn btn-outline-dark btn-sm my-2"><i class="far fa-plus-square mr-2"></i>Kategori Ekle</a>
+    <div class="p-3 text-center mt-3 lead">
+        <p class="lead">
+            Herhangi bir kategori bulunamadı.
+        </p>
+    </div>
+}
+
+<div class="modal fade" id="deleteScreen" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Uyarı</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Silmek istediğinizden emin misiniz?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                <button id="btnDelete" type="button" class="btn btn-primary">Evet Sil</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section JavaScript{ 
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#deleteScreen').on("show.bs.modal", function (event) {
+                let tetikleyenElement = $(event.relatedTarget);
+                let id = tetikleyenElement.data("selman");
+                $('#btnDelete').click(function () {
+                    $.ajax({
+                        type: "Get",
+                        url: "./Category/RemoveCategory",
+                        data: { id: id },
+                        dataType: "json",
+                        contentType: "application/json;charset=utf-8",
+                        success: function () {
+                            window.location.reload();
+                        },
+                        error: function (error) {
+                            alert(error.statusText);
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+}

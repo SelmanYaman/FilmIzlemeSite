@@ -1,0 +1,133 @@
+﻿<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.82.0">
+    <title>Film İzle</title>
+
+    <style>
+        .nav-item:hover, .navbar-brand:hover {
+            background-color: gray;
+        }
+
+        .nav-item {
+            font-size: 13px;
+        }
+
+        .black {
+            background-color: black;
+        }
+    </style>
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
+
+    <!-- Custom styles for this template -->
+
+    <link href="~/lib/bootstrap/carousel/carousel.css" rel="stylesheet" />
+    <link href="~/lib/fontAwesome/css/all.min.css" rel="stylesheet" />
+</head>
+
+<body class="m-0 p-0 black">
+
+    <nav class="navbar navbar-expand-sm navbar-dark black border-bottom border-white">
+        <div class="container">
+            <a class="navbar-brand p-2" style="font-size:1.5rem;" asp-action="Index" asp-controller="Film">AnaSayfa</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                    aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    <li class="nav-item dropdown">
+                        <a onclick="myFunction()" class="nav-link dropdown-toggle text-white" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Film Türleri</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" asp-controller="Film" asp-action="MostClicked">En Çok Tıklananlar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" asp-controller="Film" asp-action="MostCommented">En Çok Yorum Yapılanlar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" asp-controller="Film" asp-action="ImdbSevenPoint">Imdb 7+</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" asp-controller="Film" asp-action="Year2021">2021 Filmleri</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" asp-controller="Film" asp-action="TRDubbing">Türkçe Dublaj</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" asp-controller="Film" asp-action="TRSubtitle">Türkçe Altyazı</a>
+                    </li>
+                </ul>
+                <form class="d-flex" asp-controller="Film" asp-action="Search">
+                    <input class="form-control me-2" type="search" name="q" placeholder="Film Ara" aria-label="Search">
+                    <button class="btn btn-outline-light" type="submit">Ara</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container mt-3" id="myDIV" style="display:none;">
+            @await Component.InvokeAsync("CategoryList")
+        </div>
+        <div class="container text-center my-3">
+            @await Component.InvokeAsync("Slider")
+        </div>
+
+
+        <!-- Marketing messaging and featurettes
+        ================================================== -->
+        <!-- Wrap the rest of the page in another container to center all the content. -->
+
+        <div class="container">
+            <!-- Three columns of text below the carousel -->
+            <div class="row">
+                @RenderBody()
+            </div>
+            <!-- /.row -->
+
+
+            <hr class="featurette-divider">
+            <!-- /END THE FEATURETTES -->
+
+        </div><!-- /.container -->
+        <!-- FOOTER -->
+        <footer class="container">
+            <div class="page-description" style="font-size:12px;" >
+                <p>Sinema ve filmler, çok uzun yıllardan beri hayatımızda varlığını sürdüren ve toplulukların oluşmasında öncülük eden araçlardır. Ancak çoğu zaman sinemaya gitmek için zaman bulamamak veya uygun bir filme zamanında yetişememek gibi birçok sorun yüzünden izlemek istediğiniz filmleri kaçırabiliyorsunuz ki buda en büyük sorunlardan biridir.</p>
+                <p>İnternet sitelerinin hayatımızda iyice yer edinmesi ile birlikte bu tip sorunların ortadan kalktığını söyleyebiliriz ancak burada da başka sorunlar kendini gösteriyor. Kesintiler, reklamlar, donmalar vs. tüm bunlar da yine film izlemeyi engelleyen büyük sorunlar olarak karşınıza çıkabiliyor. <b>Filmizle.com</b>, yaşanan bu tip sorunları tamamen engelleyerek keyif içinde film izlemeyi ziyaretçilerine sunuyor.</p>
+                <p>Ayrıcalıklarımız</p>
+                <p>Film sitelerinde film izlemenin en zor ve çekilmez yönlerinden biri de film başlarken zorunlu olarak tıklanması gereken reklamlar veya filmin en heyecanlı yerinde araya giren ücretli reklamlar… Arkadaş, eş-dost ile birlikte veya tek başınıza film izlerken bu tip sorunların yaşanması ciddi anlamda can sıkıcı olabiliyor. <b>Filmizle</b> ekibi olarak tüm bu olumsuzlukları önleyecek bir adım attık ve <b>reklamsız film</b> izleme imkanını ziyaretçilerimize sunarak istedikleri filmleri daha rahat bir ortamda ve sinirlerin bozulmasına gerek bırakmadan HD film izle kalitesi ile sunduk.</p>
+                <p><b>IMDB puanı yüksek filmler</b></p>
+                <p>Hangi filmi izleyeceğiniz karar vermediyseniz ve zamanınızı film izleyerek geçirmek istiyorsanız, yapmanız gereken şey sitemizden <b>imdb puanı yüksek filmler</b> seçmek olacak. Her kategorideki filmlerde yer alan puan sayesinde, filmin kalitesi ve izlenebilirlik derecesini test ederek film izlemeye karar verebilirsiniz. Ayrıca sitemiz üzerinden filmleri 1080p, 720p kalite seçenekleriyle ister Türkçe dublaj film izle veya Altyazılı film izle.</p>
+            </div>
+        </footer>
+    </main>
+
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="~/lib/fontAwesome/js/all.min.js"></script>
+
+    <script>
+        function myFunction() {
+            var x = document.getElementById("myDIV");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+    </script>
+</body>
+
+</html>

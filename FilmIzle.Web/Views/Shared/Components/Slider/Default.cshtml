@@ -1,0 +1,150 @@
+﻿@{
+    List<string> filmName = ViewBag.FilmName;
+    List<string> IMDBPoint = ViewBag.IMDBPoint;
+    List<string> language = ViewBag.Language;
+    List<string> ImagePath = ViewBag.ImagePath;
+}
+
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
+<!-- Demo styles -->
+<style>
+    body,
+    html {
+        padding: 0;
+        margin: 0;
+        position: relative;
+        height: 100%;
+    }
+
+    .swiper-container {
+        width: 100%;
+        height: 100%;
+    }
+
+    .Imdb {
+        background-color: black;
+        color: orange;
+        font-size: 12px;
+        font-family: Arial;
+        padding: 3px;
+        border-radius: 5px;
+    }
+
+    .filmName {
+        font-size: medium;
+        font-family: Arial;
+        background-color: black;
+        color: orange;
+        padding: 3px;
+        border-radius: 5px;
+    }
+
+    .language {
+        background-color: black;
+        color: orange;
+        font-size: 12px;
+        font-family: Arial;
+        padding: 3px;
+        border-radius: 5px;
+    }
+
+    .swiper-slide {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+
+        .swiper-slide img {
+            display: block;
+            width: 100%;
+        }
+
+    @@media only screen and (min-width: 769px) {
+        .swiper-slide:first-child {
+            transition: transform 100ms;
+        }
+
+            .swiper-slide:first-child img {
+                transition: box-shadow 500ms;
+            }
+
+        .swiper-slide.swiper-slide-active:first-child {
+            transform: translateX(50%);
+            z-index: 2;
+        }
+
+            .swiper-slide.swiper-slide-active:first-child img {
+                box-shadow: 0px 32px 80px rgba(0, 0, 0, 0.35);
+            }
+
+        .swiper-slide:nth-child(2) {
+            transition: transform 100ms;
+        }
+
+        .swiper-slide.swiper-slide-next:nth-child(2) {
+            transform: translateX(55%);
+            z-index: 1;
+        }
+
+        .swiper-container[dir=rtl] .swiper-slide.swiper-slide-active:first-child {
+            transform: translateX(-50%);
+        }
+
+        .swiper-container[dir=rtl] .swiper-slide.swiper-slide-next:nth-child(2) {
+            transform: translateX(-55%);
+        }
+    }
+</style>
+
+<div class="swiper-container mb-5">
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            @if (filmName != null)
+            {
+                @for (int i = filmName.Count - 1; i >= 0; i--)
+                {
+                    if (filmName[i] != null || filmName[i] != "")
+                    {
+                        <div class="swiper-slide position-relative">
+                            <p class="position-absolute top-0 start-0 mx-2 my-4 Imdb">IMDB:@IMDBPoint[i]</p>
+                            <p class="position-absolute bottom-0 start-0 mx-2 my-4 filmName">@filmName[i]</p>
+                            <p class="position-absolute top-0 end-0 mx-2 my-4 language">@language[i]</p>
+                            <a style="width:98%;height: 320px;" asp-controller="Film" asp-action="Watch" asp-route-name="@filmName[i]">
+                                <img style="height:100%;width:100%;" src="~/img/Slider/@ImagePath[i]" />
+                            </a>
+                        </div>
+                    }
+                }
+            }
+        </div>
+        <!-- <div class="swiper-scrollbar"></div> -->
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        <!-- <div class="swiper-pagination"></div> -->
+    </div>
+</div>
+
+<!-- Swiper JS -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+<!-- Initialize Swiper -->
+<script>
+    var swiper = new Swiper('.swiper-container', {
+        slidesPerView: 1,
+        centeredSlides: false,
+        slidesPerGroupSkip: 1,
+        // grabCursor: true,
+        keyboard: { enabled: true },
+        breakpoints: { 769: { slidesPerView: 2, slidesPerGroup: 2 } },
+        // scrollbar: { el: '.swiper-scrollbar' },
+        navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+        // pagination: { el: '.swiper-pagination', clickable: true },
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+        },
+    });
+</script>
